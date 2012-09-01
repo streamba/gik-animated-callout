@@ -205,7 +205,7 @@
 #pragma mark -
 #pragma mark Callout layout & animation
 
-// Grab an arrow subimage from the respective image atlases. 
+// Grab an arrow subimage from the respective image atlases.
 - (UIImage *)arrowForFrame:(NSUInteger)frameNumber orientation:(ArrowOrientation)orientation {
 	UIImage *arrowSourceImage = nil;
 	CGSize subimageSize = CGSizeZero;
@@ -253,26 +253,26 @@
 	CGRect targetFrame = self.bounds;
 	self.layer.transform = [self layerTransformForScale:0.001f targetFrame:targetFrame];
 	
-	[UIView animateWithDuration:0.1 
+	[UIView animateWithDuration:0.1
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionLayoutSubviews
 					 animations:^{
 						 self.layer.transform = [self layerTransformForScale:1.1f targetFrame:targetFrame];
-					 } 
+					 }
 					 completion:^ (BOOL finished) {
 						 [UIView animateWithDuration:0.1
 											   delay:0
 											 options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionLayoutSubviews
 										  animations:^{
 											  self.layer.transform = [self layerTransformForScale:0.95f targetFrame:targetFrame];
-										  } 
+										  }
 										  completion:^ (BOOL finished) {
 											  [UIView animateWithDuration:0.1
 																	delay:0
 																  options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionLayoutSubviews
 															   animations:^{
 																   self.layer.transform = [self layerTransformForScale:1.0f targetFrame:targetFrame];
-															   } 
+															   }
 															   completion:^ (BOOL finished) {
 																   self.layer.transform = CATransform3DIdentity;
 															   }
@@ -303,10 +303,10 @@
 
 - (void)displayDetailCallout {
 	CGPoint newCalloutOrigin = CGPointZero;
-
+    
 	[(GIKCalloutContentView *)self.calloutContentView setMode:GIKContentModeDetail];
 	
-	CGRect contentFrame = [[(GIKCalloutContentView *)self.calloutContentView detailView] frame];
+	CGRect contentFrame = CGRectMake(0,0,400,400);//[[(GIKCalloutContentView *)self.calloutContentView detailView] frame];
 	CGSize newFrameSize = CGSizeMake(contentFrame.size.width + CONTENT_HORIZONTAL_INSET + CONTENT_HORIZONTAL_INSET, contentFrame.size.height);
 	
 	self.sideArrowVerticalOffset = roundf(newFrameSize.height/2) - self.frame.size.height - SIDE_ARROW_CENTER;
@@ -348,7 +348,7 @@
 						 CGRect expandedFrame = self.frame;
 						 expandedFrame.size.height = self.bounds.size.height + newFrameSize.height + BOTTOM_INSET;
 						 expandedFrame.origin.y = self.parentAnnotationView.frame.origin.y - roundf(expandedFrame.size.height/2) + SIDE_ARROW_CENTER;
-
+                         
 						 // Re-set the centerOffset to the left or right side of the annotation pin.
 						 // This ensures that the expanded callout will stay in position if the map's region property changes.
 						 if (self.calloutBias == LeftBias) {
@@ -361,7 +361,7 @@
 						 [(GIKCalloutContentView *)self.calloutContentView detailView].hidden = NO;
 						 
 						 [UIView animateWithDuration:0.3
-											   delay:0.0 
+											   delay:0.0
 											 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews
 										  animations:^{
 											  //
@@ -369,11 +369,11 @@
 											  //
 											  [self.animationDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 											  [self setFrame:expandedFrame];
-										  } 
+										  }
 										  completion:^ (BOOL finished) {
 											  [self.animationDisplayLink invalidate];
 										  }
-						  ];							 
+						  ];
 					 }
 	 ];
 }
@@ -393,7 +393,7 @@
 	CGFloat rightOffset = boundsSize.width - SIDE_WIDTH;
 	
 	// LeftBias		- the majority of the callout bubble is weighted to the left of the pin. Side arrow will be on the right of the callout.
-	// RightBias	- the majority of the callout bubble is weighted to the right of the pin. Side arrow will be on the left of the callout.	
+	// RightBias	- the majority of the callout bubble is weighted to the right of the pin. Side arrow will be on the left of the callout.
 	if (self.calloutMode == CalloutModeDefault) {
 		aboveArrowHeight = middleHeight;
 		belowArrowHeight = 1.0f;
@@ -533,7 +533,7 @@
 	if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
 		// The calloutView may overlap other annotations - disable them temporarily so they can't be selected with the touch.
 		[self disableMapSelections];
-	}	
+	}
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -543,7 +543,7 @@
 		// recognizing a gesture will cause it to transition to a cancelled state.
 		otherGestureRecognizer.enabled = NO;
 		
-		// ... then re-enable so it can start receiving touches again. 
+		// ... then re-enable so it can start receiving touches again.
 		// However, it'll ignore long gestures (pans, long presses, swipes) which are already in progress.
 		otherGestureRecognizer.enabled = YES;
 	}
@@ -553,8 +553,8 @@
 
 #pragma mark -
 #pragma mark GIKCalloutContentViewDelegate methods
-	 
-- (void)accessoryButtonTapped {	
+
+- (void)accessoryButtonTapped {
 	[self displayDetailCallout];
 }
 
